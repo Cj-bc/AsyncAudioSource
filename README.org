@@ -1,0 +1,48 @@
+* AsyncAudioSource
+
+AudioSource wrapper with Async operation in mind.
+
+** Problem of AudioSource with async/await
+
+*** Stopping on cancellation could stops other clip unintentionally
+
+Assume that you have a function that play audioClip asynchronously:
+
+#+begin_src csharp
+AudioSource as;
+
+public async UniTask PlayTutorial(CancellationToken csncellationToken)
+{
+    try
+    {
+        as.clip = yourClip;
+        as.Play();
+        // awaits as you want e.g. till the end of the clip
+    } catch (OperationCanceledException)
+    {
+        as.Stop();
+    }
+}
+#+end_src
+
+As it is async function, it should handles cancellation. 
+you might write:
+
+#+begin_src csharp
+AudioSource as;
+
+public async UniTask PlayTutorial(CancellationToken csncellationToken)
+{
+    try
+    {
+        as.clip = yourClip;
+        as.Play();
+        // awaits as you want e.g. till the end of the clip
+    } catch (OperationCanceledException)
+    {
+        as.Stop();
+    }
+}
+#+end_src
+
+ 
